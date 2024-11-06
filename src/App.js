@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { Button, Modal } from 'antd';
+import ReactPlayer from 'react-player';
 
 function App() {
-  const videoRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function openModal() {
@@ -17,14 +17,21 @@ function App() {
     <div className='container'>
       <div className='player'>
         <Button className='player_btn' onClick={openModal}>
-          <span className='player_btn__firstLine line'></span>
-          <span className='player_btn__secondLine line'></span>
-          <span className='player_btn__thirdLine line'></span>
+          <img className='player_btn__icon' src='play.png' alt='play-icon'/>
         </Button>
-        <Modal className='player_modal' title="Player" footer={null} open={isModalOpen} onCancel={closeModal} width={1000} height={700}>
-          <video className='player_modal__video' ref={videoRef} src='https://www.youtube.com/watch?v=22QAcwuGqFs'>
-            {/* <source src='https://www.youtube.com/watch?v=22QAcwuGqFs' type='video/mp4' /> */}
-          </video>
+        <Modal 
+          className='player_modal' 
+          title="Player" 
+          open={isModalOpen} 
+          onCancel={closeModal} 
+          width='1000px' 
+          height='700px' 
+          centered
+          footer={[
+            <Button>Pause</Button>
+          ]} 
+        >
+            <ReactPlayer url='https://cdn.flowplayer.com/d9cd469f-14fc-4b7b-a7f6-ccbfa755dcb8/hls/383f752a-cbd1-4691-a73f-a4e583391b3d/playlist.m3u8' width='100%' height='100%'/>
         </Modal>
       </div>
       
