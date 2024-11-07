@@ -9,7 +9,7 @@ const VideoPlayer = () => {
   const [current, send] = useMachine(playerMachine);
   const [videoUrl, setVideoUrl] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(true);
 
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
