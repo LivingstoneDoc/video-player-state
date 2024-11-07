@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useMachine } from '@xstate/react';
+import { ArrowsAltOutlined, ShrinkOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import { Modal, Button } from 'antd';
 import { playerMachine } from './playerMachine'; // Import the machine
 
 const VideoPlayer = () => {
   const [current, send] = useMachine(playerMachine);
-  const [videoUrl, setVideoUrl] = React.useState('');
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [videoUrl, setVideoUrl] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+  };
 
   const handleOpenModal = (url) => {
     setVideoUrl(url);
@@ -25,18 +31,25 @@ const VideoPlayer = () => {
 
   return (
     <>
-      <Button className='playerBtn' onClick={() => handleOpenModal('YOUR_VIDEO_URL')}><img className='playerBtn_icon' src={'play.png'} alt='play-icon'/></Button>
+      <Button className='playBtn' onClick={() => handleOpenModal('YOUR_VIDEO_URL')}><img className='playBtn_icon' src={'play.png'} alt='play-icon'/></Button>
       <Modal
+        className='modal'
         title="Video Player"
         open={isModalVisible}
         onCancel={handleCloseModal}
         footer={[
-            <Button onClick={current.matches('playing') ? handlePause : handlePlay}>
-                {current.matches('playing') ? 'Pause' : 'Play'}
+            <>
+            <Button className='playerBtn' onClick={toggleFullScreen}>
+              {isFullScreen ? <ShrinkOutlined className='playerIcon'/> : <ArrowsAltOutlined className='playerIcon'/>}
             </Button>
+            <Button className='playerBtn' onClick={current.matches('playing') ? handlePause : handlePlay}>
+              {current.matches('playing') ? <PauseOutlined className='playerIcon'/> : <CaretRightOutlined className='playerIcon'/>}
+            </Button>
+            </>
+            
         ]}
-        width="1000px"
-        height="700px"
+        width={isFullScreen ? "1000px" : "700px"}
+        height={isFullScreen ? "700px" : "300px"}
       >
         {current.matches('playing') || current.matches('paused') ? (
           <div>
@@ -46,7 +59,8 @@ const VideoPlayer = () => {
               controls={false}
               onPause={handlePause}
               onPlay={handlePlay}
-              centered
+              centered="true"
+              loop={true}
               width="100%"
               height="100%"
             />

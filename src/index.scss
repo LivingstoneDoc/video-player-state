@@ -20,7 +20,11 @@
   border-radius: 8px;
 }
 
-.playerBtn {
+.modal {
+  transition: all 0.3s;
+}
+
+.playBtn {
   margin: auto auto;
   display: flex;
   justify-content: center;
@@ -34,4 +38,12 @@
     width: 100%;
     height: 100%;
   }
+}
+
+.playerBtn {
+  border: none;
+}
+
+.playerIcon {
+  font-size: 20px;
 }
